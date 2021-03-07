@@ -1,6 +1,7 @@
 package com.unlimint.testTask.parserTests;
 
 import com.unlimint.testTask.orders.InputOrder;
+import com.unlimint.testTask.parser.CSVOrderParser;
 import com.unlimint.testTask.parser.GenericOrderParser;
 import com.unlimint.testTask.parser.JSONOrderParser;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,8 @@ public class GenericOrderParserTest {
 
     static final String JSON_FILE = "json.json";
     static final String UNSUPPORTED_FILE = "json.asdf";
+    static final String CSV_FILE = "correct.csv";
+
 
     static final List<Optional<InputOrder>> CORRECT_RESULT = Arrays.asList(
             Optional.of(new InputOrder(1, 1, "RUB", "test")),
@@ -29,6 +32,9 @@ public class GenericOrderParserTest {
     @MockBean(name = "jsonParser")
     JSONOrderParser jsonOrderParser;
 
+    @MockBean(name = "csvParser")
+    CSVOrderParser csvOrderParser;
+
     @Autowired
     GenericOrderParser genericOrderParser;
 
@@ -36,22 +42,29 @@ public class GenericOrderParserTest {
     public void parseCorrectJson(){
         Mockito.when(jsonOrderParser.parse(JSON_FILE))
                 .thenReturn(CORRECT_RESULT);
-        assertEquals(genericOrderParser.parse(JSON_FILE), CORRECT_RESULT);
+        assertEquals(CORRECT_RESULT, genericOrderParser.parse(JSON_FILE));
+    }
+
+    @Test
+    public void parseCorrectCsv(){
+        Mockito.when(csvOrderParser.parse(CSV_FILE))
+                .thenReturn(CORRECT_RESULT);
+        assertEquals(CORRECT_RESULT, genericOrderParser.parse(CSV_FILE));
     }
 
     @Test
     public void parseUnsupportedFile(){
-        assertEquals(genericOrderParser.parse(UNSUPPORTED_FILE), EMPTY_LIST);
+        assertEquals(EMPTY_LIST, genericOrderParser.parse(UNSUPPORTED_FILE));
     }
 
     @Test
     public void parseUnsupportedFileWithoutExtensionWithDot(){
-        assertEquals(genericOrderParser.parse("."), EMPTY_LIST);
+        assertEquals(EMPTY_LIST, genericOrderParser.parse("."));
     }
 
     @Test
     public void parseUnsupportedFileWithoutExtension(){
-        assertEquals(genericOrderParser.parse("ASDFG"), EMPTY_LIST);
+        assertEquals(EMPTY_LIST, genericOrderParser.parse("ASDFG"));
     }
 
 

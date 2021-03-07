@@ -32,6 +32,7 @@ public class JSONOrderParserTest {
         correctInputOrderList = Arrays.asList(Optional.of(new InputOrder(3, 1.24, "EUR", "оплата заказа")),
                 Optional.of(new InputOrder(2, 1.23, "USD", "оплата заказа")));
         incorrectInputOrderList = Arrays.asList(Optional.empty(), Optional.empty());
+
     }
 
     @Test
@@ -43,12 +44,12 @@ public class JSONOrderParserTest {
     @Test
     void parseFileWithCorrectOrders(){
         List<Optional<InputOrder>> inputOrders = parser.parse(CORRECT_ORDERS_FILEPATH);
-        assertEquals(inputOrders, correctInputOrderList);
+        assertEquals(correctInputOrderList, inputOrders);
     }
 
     @Test
     void parseFileWithIncorrectOrders(){
         List<Optional<InputOrder>> inputOrders = parser.parse(INCORRECT_ORDERS_FILEPATH);
-        assertEquals(inputOrders, incorrectInputOrderList);
+        assertEquals(incorrectInputOrderList, inputOrders);
     }
 }
