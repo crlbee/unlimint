@@ -1,13 +1,21 @@
 package com.unlimint.testTask.orders;
 
+import com.opencsv.bean.CsvBindByPosition;
+
 import java.util.Objects;
 
 public class InputOrder {
+    @CsvBindByPosition(position = 0)
     int orderId;
-    double amount;
-    String currency;
-    String comment;
 
+    @CsvBindByPosition(position = 1)
+    double amount;
+
+    @CsvBindByPosition(position = 2)
+    String currency;
+
+    @CsvBindByPosition(position = 3)
+    String comment;
 
     public InputOrder(){
     }
