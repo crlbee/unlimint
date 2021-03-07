@@ -27,7 +27,7 @@ public class GenericOrderParserTest {
     static final List<Optional<InputOrder>> EMPTY_LIST = Collections.emptyList();
 
     @MockBean(name = "jsonParser")
-    static JSONOrderParser jsonOrderParser;
+    JSONOrderParser jsonOrderParser;
 
     @Autowired
     GenericOrderParser genericOrderParser;
@@ -41,10 +41,21 @@ public class GenericOrderParserTest {
 
     @Test
     public void parseUnsupportedFile(){
-        Mockito.when(jsonOrderParser.parse(UNSUPPORTED_FILE))
-                .thenReturn(EMPTY_LIST);
         assertEquals(genericOrderParser.parse(UNSUPPORTED_FILE), EMPTY_LIST);
     }
+
+    @Test
+    public void parseUnsupportedFileWithoutExtensionWithDot(){
+        assertEquals(genericOrderParser.parse("."), EMPTY_LIST);
+    }
+
+    @Test
+    public void parseUnsupportedFileWithoutExtension(){
+        assertEquals(genericOrderParser.parse("ASDFG"), EMPTY_LIST);
+    }
+
+
+
 
 
 

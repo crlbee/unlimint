@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class GenericOrderParser implements OrderParser{
+public class GenericOrderParser implements Parser{
     static final String PARSER_BEAN_SUFFIX = "Parser";
 
     private final ApplicationContext CONTEXT;
