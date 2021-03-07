@@ -43,12 +43,12 @@ public class JSONOrderParserTest {
     @Test
     void parseFileWithCorrectOrders(){
         List<Optional<InputOrder>> inputOrders = parser.parse(CORRECT_ORDERS_FILEPATH);
-        assertEquals(correctInputOrderList, inputOrders);
+        assertEquals(inputOrders, correctInputOrderList);
     }
 
     @Test
     void parseFileWithIncorrectOrders(){
         List<Optional<InputOrder>> inputOrders = parser.parse(INCORRECT_ORDERS_FILEPATH);
-        assertEquals(incorrectInputOrderList, inputOrders);
+        assertEquals(inputOrders, incorrectInputOrderList);
     }
 }
