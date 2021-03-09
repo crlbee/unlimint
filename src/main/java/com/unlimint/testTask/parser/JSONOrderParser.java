@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component("jsonParser")
-public class JSONOrderParser extends OrderParser {
+public class JSONOrderParser implements Parser {
     private final ObjectMapper MAPPER;
 
     @Autowired
@@ -18,7 +18,7 @@ public class JSONOrderParser extends OrderParser {
     }
 
     @Override
-    public Optional<InputOrder> getOrder(String orderLine){
+    public Optional<InputOrder> parse(String orderLine){
         try {
             return Optional.of(MAPPER.readValue(orderLine, InputOrder.class));
         } catch (JsonProcessingException e) {

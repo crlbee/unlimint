@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component("csvParser")
-public class CSVOrderParser extends OrderParser {
+public class CSVOrderParser implements Parser {
 
     ObjectReader reader;
 
@@ -19,7 +19,7 @@ public class CSVOrderParser extends OrderParser {
     }
 
     @Override
-    public Optional<InputOrder> getOrder(String orderLine) {
+    public Optional<InputOrder> parse(String orderLine) {
         try {
             return Optional.of(reader.readValue(orderLine));
         } catch (JsonProcessingException e) {

@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Parser {
-    List<Optional<InputOrder>> parse(String filename);
+    Optional<InputOrder> parse(String line);
 }

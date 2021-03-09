@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,13 +19,15 @@ public class GenericOrderParserTest {
 
     static final String JSON_FILE = "json.json";
     static final String UNSUPPORTED_FILE = "json.asdf";
-    static final String CSV_FILE = "correct.csv";
+    static final String CSV_FILE = "csv.csv";
 
+    static final String JSON_ORDER = "{\"orderId\":1,\"amount\":1,\"currency\":\"RUB\",\"comment\":\"test\"}";
+    static final String CSV_ORDER = "1,1,RUB,test";
 
-    static final List<Optional<InputOrder>> CORRECT_RESULT = Arrays.asList(
-            Optional.of(new InputOrder(1, 1, "RUB", "test")),
-            Optional.of(new InputOrder(2, 2, "RUB", "test")));
-    static final List<Optional<InputOrder>> EMPTY_LIST = Collections.emptyList();
+    static final Optional<InputOrder> CORRECT_RESULT =
+            Optional.of(new InputOrder(1, 1, "RUB", "test"));
+
+    static final Optional<InputOrder> EMPTY_ORDER = Optional.empty();
 
     @MockBean(name = "jsonParser")
     JSONOrderParser jsonOrderParser;
@@ -40,31 +40,31 @@ public class GenericOrderParserTest {
 
     @Test
     public void parseCorrectJson(){
-        Mockito.when(jsonOrderParser.parse(JSON_FILE))
+        Mockito.when(jsonOrderParser.parse(JSON_ORDER))
                 .thenReturn(CORRECT_RESULT);
-        assertEquals(CORRECT_RESULT, genericOrderParser.parse(JSON_FILE));
+        assertEquals(CORRECT_RESULT, genericOrderParser.parse(JSON_ORDER, JSON_FILE));
     }
 
     @Test
     public void parseCorrectCsv(){
-        Mockito.when(csvOrderParser.parse(CSV_FILE))
+        Mockito.when(csvOrderParser.parse(CSV_ORDER))
                 .thenReturn(CORRECT_RESULT);
-        assertEquals(CORRECT_RESULT, genericOrderParser.parse(CSV_FILE));
+        assertEquals(CORRECT_RESULT, genericOrderParser.parse(CSV_ORDER, CSV_FILE));
     }
 
     @Test
     public void parseUnsupportedFile(){
-        assertEquals(EMPTY_LIST, genericOrderParser.parse(UNSUPPORTED_FILE));
+        assertEquals(EMPTY_ORDER, genericOrderParser.parse(CSV_ORDER,UNSUPPORTED_FILE));
     }
 
     @Test
     public void parseUnsupportedFileWithoutExtensionWithDot(){
-        assertEquals(EMPTY_LIST, genericOrderParser.parse("."));
+        assertEquals(EMPTY_ORDER, genericOrderParser.parse(CSV_ORDER,"."));
     }
 
     @Test
     public void parseUnsupportedFileWithoutExtension(){
-        assertEquals(EMPTY_LIST, genericOrderParser.parse("ASDFG"));
+        assertEquals(EMPTY_ORDER, genericOrderParser.parse(CSV_ORDER,"ASDFG"));
     }
 
 

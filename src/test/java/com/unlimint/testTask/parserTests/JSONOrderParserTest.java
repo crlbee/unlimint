@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -20,36 +17,28 @@ public class JSONOrderParserTest {
     @Autowired
     JSONOrderParser parser;
 
-    static final String CORRECT_ORDERS_FILEPATH = "src/test/resources/correct.json";
-    static final String INCORRECT_ORDERS_FILEPATH = "src/test/resources/incorrect.json";
-    static final String INCORRECT_FILENAME = "INCORRECT_FILENAME";
+    static final String CORRECT_ORDER = "{\"orderId\":1,\"amount\":1,\"currency\":\"RUB\",\"comment\":\"test\"}";
+    static final String INCORRECT_ORDER = "{\"orderId\":1,\"amount\":asdasd,\"currency\":\"RUB\",\"comment\":\"test\"}";
 
-    static List<Optional<InputOrder>> correctInputOrderList;
-    static List<Optional<InputOrder>> incorrectInputOrderList;
+    static Optional<InputOrder> correctInputOrder;
+    static Optional<InputOrder> incorrectInputOrder;
 
     @BeforeAll
     public static void init(){
-        correctInputOrderList = Arrays.asList(Optional.of(new InputOrder(3, 1.24, "EUR", "оплата заказа")),
-                Optional.of(new InputOrder(2, 1.23, "USD", "оплата заказа")));
-        incorrectInputOrderList = Arrays.asList(Optional.empty(), Optional.empty());
+        correctInputOrder = Optional.of(new InputOrder(1, 1, "RUB", "test"));
+        incorrectInputOrder = Optional.empty();
 
     }
 
     @Test
-    void openFileWithWrongName(){
-        List<Optional<InputOrder>> inputOrders = parser.parse(INCORRECT_FILENAME);
-        assertTrue(inputOrders.isEmpty());
+    void parseFileWithCorrectOrder(){
+        Optional<InputOrder> inputOrders = parser.parse(CORRECT_ORDER);
+        assertEquals(correctInputOrder, inputOrders);
     }
 
     @Test
-    void parseFileWithCorrectOrders(){
-        List<Optional<InputOrder>> inputOrders = parser.parse(CORRECT_ORDERS_FILEPATH);
-        assertEquals(correctInputOrderList, inputOrders);
-    }
-
-    @Test
-    void parseFileWithIncorrectOrders(){
-        List<Optional<InputOrder>> inputOrders = parser.parse(INCORRECT_ORDERS_FILEPATH);
-        assertEquals(incorrectInputOrderList, inputOrders);
+    void parseFileWithIncorrectOrder(){
+        Optional<InputOrder> inputOrders = parser.parse(INCORRECT_ORDER);
+        assertEquals(incorrectInputOrder, inputOrders);
     }
 }

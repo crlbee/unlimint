@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class GenericOrderParser implements Parser{
+public class GenericOrderParser{
     static final String PARSER_BEAN_SUFFIX = "Parser";
 
     private final ApplicationContext CONTEXT;
@@ -22,15 +22,15 @@ public class GenericOrderParser implements Parser{
         LOGGER = log;
     }
 
-    public List<Optional<InputOrder>> parse(String filename) {
+    public Optional<InputOrder> parse(String line, String filename) {
         final String PARSER_BEAN_PREFIX = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
 
         String parserName = PARSER_BEAN_PREFIX + PARSER_BEAN_SUFFIX;
         try {
-            return CONTEXT.getBean(parserName, OrderParser.class).parse(filename);
+            return CONTEXT.getBean(parserName, Parser.class).parse(line);
         } catch (BeansException e) {
             LOGGER.warn("unsupported file extension", e);
-            return Collections.emptyList();
+            return Optional.empty();
         }
     }
 }

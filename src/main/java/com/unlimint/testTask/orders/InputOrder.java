@@ -1,12 +1,10 @@
 package com.unlimint.testTask.orders;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.opencsv.bean.CsvBindByPosition;
 
 import java.util.Objects;
 
-@JsonPropertyOrder({ "orderId", "amount", "currency", "comment" })
+@JsonPropertyOrder({"orderId", "amount", "currency", "comment" })
 public class InputOrder {
 
     int orderId;
