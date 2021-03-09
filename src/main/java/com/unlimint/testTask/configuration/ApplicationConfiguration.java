@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.io.Reader;
+import java.util.Objects;
 
 
 @Configuration
@@ -26,7 +27,8 @@ public class ApplicationConfiguration {
     @Bean
     @Scope("prototype")
     Logger logger(InjectionPoint injectionPoint){
-        return LoggerFactory.getLogger(injectionPoint.getMethodParameter().getContainingClass().getName());
+        return LoggerFactory.getLogger(Objects.requireNonNull(injectionPoint.getMethodParameter())
+                .getContainingClass().getName());
     }
 
     @Bean
